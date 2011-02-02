@@ -1,7 +1,7 @@
 # Anime recording system foltia
 # http://www.dcc-jpl.com/soft/foltia/
 #
-# ½é´üÀßÄê¥Õ¥¡¥¤¥ë1
+# åˆæœŸè¨­å®šãƒ•ã‚¡ã‚¤ãƒ«1
 #
 # DCC-JPL Japan/foltia project
 #
@@ -9,24 +9,24 @@
 
 
 #config section
-$toolpath = '/tv'; #¡Öperl¡×¥Ç¥£¥ì¥¯¥È¥ê¤¬¤¢¤ëPATH
-$recunits = 0;					#¥¢¥Ê¥í¥°¥­¥ã¥×¥Á¥ã¥«¡¼¥ÉÅëºÜ¥¨¥ó¥³¡¼¥À¤Î¿ô
-$recfolderpath = '/tv/php/tv';		#Ï¿²è¥Õ¥¡¥¤¥ë¤òÃÖ¤¯PATH
-$uhfbandtype = 1; # CATV¤Ê¤é1 UHFÂÓ¤Ê¤é0 : 0=ntsc-bcast-jp 1=ntsc-cable-jp
-$rapidfiledelete =  0;#1¤Ê¤éºï½ü¥Õ¥¡¥¤¥ë¤Ï¡Ömita¡×¥Ç¥£¥ì¥¯¥È¥ê¤Ë°ÜÆ°¡£0¤Ê¤éÂ¨»şºï½ü
+$toolpath = '/tv'; #ã€Œperlã€ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªãŒã‚ã‚‹PATH
+$recunits = 0;					#ã‚¢ãƒŠãƒ­ã‚°ã‚­ãƒ£ãƒ—ãƒãƒ£ã‚«ãƒ¼ãƒ‰æ­è¼‰ã‚¨ãƒ³ã‚³ãƒ¼ãƒ€ã®æ•°
+$recfolderpath = '/tv/php/tv';		#éŒ²ç”»ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ç½®ãPATH
+$uhfbandtype = 1; # CATVãªã‚‰1 UHFå¸¯ãªã‚‰0 : 0=ntsc-bcast-jp 1=ntsc-cable-jp
+$rapidfiledelete =  0;#1ãªã‚‰å‰Šé™¤ãƒ•ã‚¡ã‚¤ãƒ«ã¯ã€Œmitaã€ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã«ç§»å‹•ã€‚0ãªã‚‰å³æ™‚å‰Šé™¤
 $tunerinputnum = 0; #IO-DATA DV-MVP/RX,RX2,RX2W
 $svideoinputnum = 1;#IO-DATA DV-MVP/RX,RX2,RX2W
 $comvideoinputnum= 2;#IO-DATA DV-MVP/RX,RX2,RX2W
-$haveirdaunit = 1;#Tira-2<http://www.home-electro.com/tira2.php>¤ò¤Ä¤Ê¤¤¤Ç¤¤¤ë¤È¤­¤Ë1,¤Ê¤±¤ì¤Ğ0
-$mp4filenamestyle = 1 ;#0:PSP ¥Õ¥¡¡¼¥à¥¦¥§¥¢ver.2.80¤è¤êÁ°¤È¸ß´¹À­¤ò»ı¤Ä¥Õ¥¡¥¤¥ëÌ¾ 1;¤è¤ê¤ï¤«¤ê¤ä¤¹¤¤¥Õ¥¡¥¤¥ëÌ¾
+$haveirdaunit = 1;#Tira-2<http://www.home-electro.com/tira2.php>ã‚’ã¤ãªã„ã§ã„ã‚‹ã¨ãã«1,ãªã‘ã‚Œã°0
+$mp4filenamestyle = 1 ;#0:PSP ãƒ•ã‚¡ãƒ¼ãƒ ã‚¦ã‚§ã‚¢ver.2.80ã‚ˆã‚Šå‰ã¨äº’æ›æ€§ã‚’æŒã¤ãƒ•ã‚¡ã‚¤ãƒ«å 1;ã‚ˆã‚Šã‚ã‹ã‚Šã‚„ã™ã„ãƒ•ã‚¡ã‚¤ãƒ«å
 $trconqty = 3;
-#0:PSP/iPod XviD MPEG4(µì¼°):faac¤ÈMPEG4IP¤ò»È¤Ã¤ÆÊÑ´¹(¸Å¤¤ÀßÄê)
-#1:iPod Xvid MPEG4 É¸½à²è¼Á 15fps 300kbps / ¥Ç¥¸¥¿¥ë  360x202 24.00fps 300kbps
-#2:iPod H.264 Ãæ²è¼Á 24fps 300kbps / ¥Ç¥¸¥¿¥ë 480x272  29.97fps 400kbps
-#3:iPod H.264 ¹â²è¼Á 30fps 300kbps / ¥Ç¥¸¥¿¥ë  640x352 29.97fps 600kbps
-$phptoolpath = $toolpath ;#phpÈÇ¤Î½é´üÀßÄê¤Î°ÌÃÖ¡£¥Ç¥Õ¥©¥ë¥È¤Ç¤Ïperl¤ÈÆ±¤¸°ÌÃÖ
+#0:PSP/iPod XviD MPEG4(æ—§å¼):faacã¨MPEG4IPã‚’ä½¿ã£ã¦å¤‰æ›(å¤ã„è¨­å®š)
+#1:iPod Xvid MPEG4 æ¨™æº–ç”»è³ª 15fps 300kbps / ãƒ‡ã‚¸ã‚¿ãƒ«  360x202 24.00fps 300kbps
+#2:iPod H.264 ä¸­ç”»è³ª 24fps 300kbps / ãƒ‡ã‚¸ã‚¿ãƒ« 480x272  29.97fps 400kbps
+#3:iPod H.264 é«˜ç”»è³ª 30fps 300kbps / ãƒ‡ã‚¸ã‚¿ãƒ«  640x352 29.97fps 600kbps
+$phptoolpath = $toolpath ;#phpç‰ˆã®åˆæœŸè¨­å®šã®ä½ç½®ã€‚ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã§ã¯perlã¨åŒã˜ä½ç½®
 
-#°Ê²¼¤Ï¥Ç¥Õ¥©¥ë¥È¤Ç¥¤¥ó¥¹¥È¡¼¥ë¤·¤Æ¤ì¤Ğ¤¤¤¸¤é¤Ê¤¯¤Æ¤â¤¤¤¤
+#ä»¥ä¸‹ã¯ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã§ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã—ã¦ã‚Œã°ã„ã˜ã‚‰ãªãã¦ã‚‚ã„ã„
 
 ## for postgresql
 #$main::DSN="dbi:Pg:dbname=foltia;host=localhost;port=5432";
@@ -39,7 +39,7 @@ require 'db/SQLite.pl';
 $main::DBUser="foltia";
 $main::DBPass="";
 
-#¥Ç¥Ğ¥Ã¥°¥í¥°¤ò¡Ö~/debug.txt¡×¤Ë»Ä¤¹¤«¤É¤¦¤«
+#ãƒ‡ãƒãƒƒã‚°ãƒ­ã‚°ã‚’ã€Œ~/debug.txtã€ã«æ®‹ã™ã‹ã©ã†ã‹
 $debugmode = 1;#write debug log
 
 

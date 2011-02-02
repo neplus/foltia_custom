@@ -4,8 +4,8 @@
 # http://www.dcc-jpl.com/soft/foltia/
 #
 #usage ;mklocalizeddir.pl [TID]
-# Mac OS X Localized¥Õ¥©¡¼¥Ş¥Ã¥È¤Ë½àµò¤·¤¿¹½Â¤¤ÎÏ¿²è¥Ç¥£¥ì¥¯¥È¥ê¤òºî¤ë¡£
-# »²¹Í:[Mac OS X 10.2¤Î¥í¡¼¥«¥é¥¤¥ºµ¡Ç½] http://msyk.net/macos/jaguar-localize/
+# Mac OS X Localizedãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã«æº–æ‹ ã—ãŸæ§‹é€ ã®éŒ²ç”»ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‚’ä½œã‚‹ã€‚
+# å‚è€ƒ:[Mac OS X 10.2ã®ãƒ­ãƒ¼ã‚«ãƒ©ã‚¤ã‚ºæ©Ÿèƒ½] http://msyk.net/macos/jaguar-localize/
 #
 # DCC-JPL Japan/foltia project
 #
@@ -24,27 +24,27 @@ push( @INC, "$path");
 }
 require "foltialib.pl";
 
-#°ú¤­¿ô¤¬¥¢¥ë¤«?
+#å¼•ãæ•°ãŒã‚¢ãƒ«ã‹?
 $tid =  $ARGV[0] ;
 if ($tid eq "" ){
-	#°ú¤­¿ô¤Ê¤·½Ğ¼Â¹Ô¤µ¤ì¤¿¤é¡¢½ªÎ»
+	#å¼•ãæ•°ãªã—å‡ºå®Ÿè¡Œã•ã‚ŒãŸã‚‰ã€çµ‚äº†
 	print "usage mklocalizeddir.pl [TID]\n";
 	exit;
 }
 
 
-#¤½¤Î¥Ç¥£¥ì¥¯¥È¥ê¤¬¤Ê¤±¤ì¤Ğ
+#ãã®ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªãŒãªã‘ã‚Œã°
 if (-e "$recfolderpath/$tid.localized"){
 
 }else{
 
 
-#.localizedÍÑÊ¸»úÎó¼èÆÀ
+#.localizedç”¨æ–‡å­—åˆ—å–å¾—
 
-#ÀÜÂ³
+#æ¥ç¶š
     $dbh = DBI->connect($DSN,$DBUser,$DBPass) ||die $DBI::error;;
 
-#¸¡º÷
+#æ¤œç´¢
     $sth = $dbh->prepare($stmt{'mklocalizeddir.1'});
     $sth->execute($tid);
  @subticount= $sth->fetchrow_array;
@@ -63,5 +63,5 @@ $titleeuc = $title ;
 
 &writelog("mklocalizeddir $tid $titleeuc");
 
-}#unless °ú¤­¿ô¤¬¥¢¥ë¤«?
+}#unless å¼•ãæ•°ãŒã‚¢ãƒ«ã‹?
 

@@ -3,20 +3,20 @@
 # Anime recording system foltia
 # http://www.dcc-jpl.com/soft/foltia/
 #
-#usage singletranscode.pl [563-1-20051022-1830.m2p] (PATH¤Ê¤·¤Ç)
+#usage singletranscode.pl [563-1-20051022-1830.m2p] (PATHãªã—ã§)
 #
-#¥È¥é¥³¥ó¥é¥Ã¥Ñ
-#¤ª¤â¤Ë¥á¥ó¥Æ¥Ê¥ó¥¹ÍÑ
-# ¥Õ¥¡¥¤¥ëÌ¾¤¬¸Å¤¤¤Ş¤Ş
+#ãƒˆãƒ©ã‚³ãƒ³ãƒ©ãƒƒãƒ‘
+#ãŠã‚‚ã«ãƒ¡ãƒ³ãƒ†ãƒŠãƒ³ã‚¹ç”¨
+# ãƒ•ã‚¡ã‚¤ãƒ«åãŒå¤ã„ã¾ã¾
 #
-#faac¤Ç»É¤µ¤ë¾ì¹ç¤Ïffmpeg¤Ä¤«¤Ã¤¿ÊÌ¤Î¥È¥é¥³¥ó¤ò»î¤·¤Æ¤ß¤Æ¤â¤è¤¤¤Ç¤·¤ç¤¦
+#faacã§åˆºã•ã‚‹å ´åˆã¯ffmpegã¤ã‹ã£ãŸåˆ¥ã®ãƒˆãƒ©ã‚³ãƒ³ã‚’è©¦ã—ã¦ã¿ã¦ã‚‚ã‚ˆã„ã§ã—ã‚‡ã†
 #
 #./ffmpeg -i ~/php/tv/962-2-20061014-0209.m2p -vcodec xvid -croptop 8 -cropbottom 8 -cropleft 8 -cropright 14 -s 320x240 -b 300 -bt 128 -r 14.985 -bufsize 192 -maxrate 512 -minrate 0 -deinterlace -acodec aac -ab 128 -ar 24000 -ac 2 ~/php/tv/962.localized/mp4/M4V-962-2-20061014-0209.MP4
 #
-#¸Å¤¤
+#å¤ã„
 # ffmpeg -i  ../../563-1-20051022-1830.m2p  -f psp -r 14.985 -s 320x240 -b  300 -ar 24000 -ab 32 M4V00001.MP4 
 #
-# ¸½¹Ô¥È¥é¥³¥ó¤ÎÁ°ÃÊ³¬¥³¥Ş¥ó¥É
+# ç¾è¡Œãƒˆãƒ©ã‚³ãƒ³ã®å‰æ®µéšã‚³ãƒãƒ³ãƒ‰
 # /usr/local/bin/ffmpeg -y -i $1 -vcodec xvid -croptop 8 -cropbottom 8 -cropleft  8 -cropright 14 -s 320x240 -b 300 -bt 128 -r 14.985  -hq -nr -qns -bufsize 192 -maxrate 512 -minrate 0 -deinterlace  -acodec pcm_s16le -ar 24000 -ac 2 -f m4v $TMP_M4V -f s16le $TMP_S16
 #
 #
@@ -39,10 +39,10 @@ push( @INC, "$path");
 }
 
 require "foltialib.pl";
-#°ú¤­¿ô¤¬¥¢¥ë¤«?
+#å¼•ãæ•°ãŒã‚¢ãƒ«ã‹?
 $outputfile =  $ARGV[0] ;
 if ($outputfile eq "" ){
-	#°ú¤­¿ô¤Ê¤·½Ğ¼Â¹Ô¤µ¤ì¤¿¤é¡¢½ªÎ»
+	#å¼•ãæ•°ãªã—å‡ºå®Ÿè¡Œã•ã‚ŒãŸã‚‰ã€çµ‚äº†
 	print "usage singletranscode.pl  srcMPEG2file [PID] [pspdir] [aspect 3|16] [title]\n";
 	print "Ex. singletranscode.pl  514-2-20050701-2400.m2p 32961 [pspdir] [aspect 3|16] [title]\n";
 	exit;
@@ -60,9 +60,9 @@ $outputfile =~ s/\.m2p//;
 		$mp4newstylefilename = "-".$outputfile ;
 
 
-# -- recwrap¤«¤é¤Û¤È¤ó¤É¥³¥Ô¡¼
+# -- recwrapã‹ã‚‰ã»ã¨ã‚“ã©ã‚³ãƒ”ãƒ¼
 
-#PSP¥È¥é¥³¥óÉ¬Í×¤«¤É¤¦¤«
+#PSPãƒˆãƒ©ã‚³ãƒ³å¿…è¦ã‹ã©ã†ã‹
 $dbh = DBI->connect($DSN,$DBUser,$DBPass) ||die $DBI::error;;
 
 if ($ARGV[1] != ""){
@@ -80,7 +80,7 @@ if ($ARGV[1] != ""){
 }#endif pid
 
 
-#¡¡ÄÉ²ÃÉôÊ¬
+#ã€€è¿½åŠ éƒ¨åˆ†
 
 $sth = $dbh->prepare($stmt{'singletranscode.2'});
 $sth->execute($tid, $countno);
@@ -100,11 +100,11 @@ $sth->execute($tid, $countno);
 }
 }
 sleep(10);
-#¡¡ÄÉ²ÃÉôÊ¬¤³¤³¤Ş¤Ç
+#ã€€è¿½åŠ éƒ¨åˆ†ã“ã“ã¾ã§
 
 
 
-# Starlight breaker¸ş¤±¥­¥ã¥×¥Á¥ã²èÁüºîÀ®
+# Starlight breakerå‘ã‘ã‚­ãƒ£ãƒ—ãƒãƒ£ç”»åƒä½œæˆ
 if (-e "$toolpath/perl/captureimagemaker.pl"){
 	&writelog("singletranscode Call captureimagemaker $outputfilename");
 	system ("$toolpath/perl/captureimagemaker.pl $outputfilename");
@@ -113,48 +113,48 @@ if (-e "$toolpath/perl/captureimagemaker.pl"){
 
 
 # PSP ------------------------------------------------------
-#PSP¥È¥é¥³¥óÉ¬Í×¤«¤É¤¦¤«
+#PSPãƒˆãƒ©ã‚³ãƒ³å¿…è¦ã‹ã©ã†ã‹
 $sth = $dbh->prepare($stmt{'singletranscode.4'});
 $sth->execute($tid);
  @psptrcn= $sth->fetchrow_array;
- if ($psptrcn[0]  == 1 ){#¥È¥é¥³¥óÈÖÁÈ
+ if ($psptrcn[0]  == 1 ){#ãƒˆãƒ©ã‚³ãƒ³ç•ªçµ„
 
 
-#PSP¥à¡¼¥Ó¡¼¥Ç¥£¥ì¥¯¥È¥ê¤¬¥¢¥ë¤«¤É¤¦¤«
+#PSPãƒ ãƒ¼ãƒ“ãƒ¼ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªãŒã‚¢ãƒ«ã‹ã©ã†ã‹
  
-#TID¤¬100°Ê¾å¤Î3·å¤Î¾ì¹ç¤Ï¤½¤Î¤Ş¤Ş
+#TIDãŒ100ä»¥ä¸Šã®3æ¡ã®å ´åˆã¯ãã®ã¾ã¾
 my $pspfilnamehd = "";
 
 	$pspfilnamehd = $tid;
 $pspdirname = "$tid.localized/";
 $pspdirname = $recfolderpath."/".$pspdirname;
 
-#¤Ê¤±¤ì¤Ğºî¤ë
+#ãªã‘ã‚Œã°ä½œã‚‹
 unless (-e $pspdirname ){
 	system("$toolpath/perl/mklocalizeddir.pl $tid");
 	#&writelog("singletranscode mkdir $pspdirname");
 }
 $pspdirname = "$tid.localized/mp4/";
 $pspdirname = $recfolderpath."/".$pspdirname;
-#¤Ê¤±¤ì¤Ğºî¤ë
+#ãªã‘ã‚Œã°ä½œã‚‹
 unless (-e $pspdirname ){
 	mkdir $pspdirname ,0777;
 	#&writelog("singletranscode mkdir $pspdirname");
 }
 
-#¥Õ¥¡¥¤¥ëÌ¾·èÄê
-if ($mp4filenamestyle == 1){# 1;¤è¤ê¤ï¤«¤ê¤ä¤¹¤¤¥Õ¥¡¥¤¥ëÌ¾
+#ãƒ•ã‚¡ã‚¤ãƒ«åæ±ºå®š
+if ($mp4filenamestyle == 1){# 1;ã‚ˆã‚Šã‚ã‹ã‚Šã‚„ã™ã„ãƒ•ã‚¡ã‚¤ãƒ«å
  $pspfilname = $mp4newstylefilename ;
  
-}else{##0:PSP ¥Õ¥¡¡¼¥à¥¦¥§¥¢ver.2.80¤è¤êÁ°¤È¸ß´¹À­¤ò»ı¤Ä¥Õ¥¡¥¤¥ëÌ¾
-#¡¦¥Õ¥©¥ë¥ÀÌ¾[100MNV01]¤Î100¤ÎÉôÊ¬¤ÏÊÑ¹¹²Ä(100¡Á999)¡£
-# MP_ROOT ¨¬ 100MNV01 ¨³ M4V00001.MP4¡ÊÆ°²è¡Ë
-#¨­         ¡¡        ¨± M4V00001.THM¡Ê¥µ¥à¥Í¥¤¥ë¡Ë¢¨É¬¿Ü¤Ç¤Ï¤Ê¤¤
+}else{##0:PSP ãƒ•ã‚¡ãƒ¼ãƒ ã‚¦ã‚§ã‚¢ver.2.80ã‚ˆã‚Šå‰ã¨äº’æ›æ€§ã‚’æŒã¤ãƒ•ã‚¡ã‚¤ãƒ«å
+#ãƒ»ãƒ•ã‚©ãƒ«ãƒ€å[100MNV01]ã®100ã®éƒ¨åˆ†ã¯å¤‰æ›´å¯(100ã€œ999)ã€‚
+# MP_ROOT â” 100MNV01 â”³ M4V00001.MP4ï¼ˆå‹•ç”»ï¼‰
+#â”ƒ         ã€€        â”— M4V00001.THMï¼ˆã‚µãƒ ãƒã‚¤ãƒ«ï¼‰â€»å¿…é ˆã§ã¯ãªã„
 
-#¥Õ¥¡¥¤¥ëÌ¾·èÄê
-#¥Õ¥¡¥¤¥ëÌ¾·èÄê #¿·¥¢¥ë¥´¥ê¥º¥à
-#TID 0000-3599¤Ş¤Ç[3·å]
-#ÏÃ¿ô 00-999¤Ş¤Ç[2·å]
+#ãƒ•ã‚¡ã‚¤ãƒ«åæ±ºå®š
+#ãƒ•ã‚¡ã‚¤ãƒ«åæ±ºå®š #æ–°ã‚¢ãƒ«ã‚´ãƒªã‚ºãƒ 
+#TID 0000-3599ã¾ã§[3æ¡]
+#è©±æ•° 00-999ã¾ã§[2æ¡]
 
 my $pspfilnameft = "";
 my $pspfilnameyearhd = "";
@@ -202,22 +202,22 @@ $pspfilnamehd = $pspfilnameyearhd . $pspfilnameyearft;
 
 }
 
-# ÏÃ¿ô
+# è©±æ•°
 if (0 < $countno && $countno < 100 ){
-# 2·å
+# 2æ¡
 	$pspfilnameft = sprintf("%02d",$countno);
 }elsif(100 <= $countno && $countno < 1000 ){
-# 3·å
-	$pspfilnameft = sprintf("%03d",$countno); # ÏÃ¿ô3·å
-	$pspfilnamehd = substr($pspfilnamehd, 0, 2); # TID Æó·å¡¡¸å¤í1¥Ğ¥¤¥ÈÍî¤È¤·
+# 3æ¡
+	$pspfilnameft = sprintf("%03d",$countno); # è©±æ•°3æ¡
+	$pspfilnamehd = substr($pspfilnamehd, 0, 2); # TID äºŒæ¡ã€€å¾Œã‚1ãƒã‚¤ãƒˆè½ã¨ã—
 }elsif(1000 <= $countno && $countno < 10000 ){
-# 4·å
-	$pspfilnameft = sprintf("%04d",$countno); # ÏÃ¿ô4·å
-	$pspfilnamehd = substr($pspfilnamehd, 0, 1); # TID 1·å¡¡¸å¤í2¥Ğ¥¤¥ÈÍî¤È¤·
+# 4æ¡
+	$pspfilnameft = sprintf("%04d",$countno); # è©±æ•°4æ¡
+	$pspfilnamehd = substr($pspfilnamehd, 0, 1); # TID 1æ¡ã€€å¾Œã‚2ãƒã‚¤ãƒˆè½ã¨ã—
 
 
 }elsif($countno == 0){
-#¥¿¥¤¥à¥¹¥¿¥ó¥×¤¬ºÇ¿·¤ÎMP4¥Õ¥¡¥¤¥ëÌ¾¼èÆÀ
+#ã‚¿ã‚¤ãƒ ã‚¹ã‚¿ãƒ³ãƒ—ãŒæœ€æ–°ã®MP4ãƒ•ã‚¡ã‚¤ãƒ«åå–å¾—
 my $newestmp4filename = `cd $pspdirname ; ls -t *.MP4 | head -1`;
  if ($newestmp4filename =~ /M4V$tid/){
 		$nowcountno = $' ;#'
@@ -230,9 +230,9 @@ my $newestmp4filename = `cd $pspdirname ; ls -t *.MP4 | head -1`;
 	}
 #print "NeXT\n";
 }else{
-# 0¤Î¾ì¹ç¡¡½µÈÖ¹æ¤ò100¤«¤é°ú¤¤¤¿¤â¤Î
+# 0ã®å ´åˆã€€é€±ç•ªå·ã‚’100ã‹ã‚‰å¼•ã„ãŸã‚‚ã®
 # week number of year with Monday as first day of week (01..53)
-#¤À¤Ã¤¿¤±¤É¾ï¤Ë0¤Ë
+#ã ã£ãŸã‘ã©å¸¸ã«0ã«
 #	my $weeno = `date "+%V"`;
 #	$weeno = 100 - $weeno ;
 #	$pspfilnameft = sprintf("%02d",$weeno);
@@ -244,15 +244,15 @@ my $newestmp4filename = `cd $pspdirname ; ls -t *.MP4 | head -1`;
 
 my $pspfilname = $pspfilnamehd.$pspfilnameft  ;
 # print "$pspfilname($pspfilnamehd/$pspfilnameft)\n";
-}# endif MP4¥Õ¥¡¥¤¥ëÌ¾¤¬¿·style¤Ê¤é
+}# endif MP4ãƒ•ã‚¡ã‚¤ãƒ«åãŒæ–°styleãªã‚‰
 
 &writelog("singletranscode TRCNSTART vfr4psp.sh $recfolderpath/$outputfilename $pspfilname $pspdirname $psptrcn[1]");
-#¥È¥é¥³¥ó³«»Ï
+#ãƒˆãƒ©ã‚³ãƒ³é–‹å§‹
 system("$toolpath/perl/transcode/vfr4psp.sh $recfolderpath/$outputfilename $pspfilname $pspdirname $psptrcn[1]");
 
 &writelog("singletranscode TRCNEND  vfr4psp.sh $recfolderpath/$outputfilename $pspfilname $pspdirname $psptrcn[1]");
 
-#ºÇÅ¬²½
+#æœ€é©åŒ–
 
     $sth = $dbh->prepare($stmt{'singletranscode.5'});
     $sth->execute($tid, $countno);
@@ -268,7 +268,7 @@ Jcode::convert(\$programtitle[0],'euc');
 system ("/usr/local/bin/mp4psp -p $pspdirname/M4V$pspfilname.MP4   -t  '$psptrcn[2] $pspcountno $programtitle[0]'") ;
 
 
-#¥µ¥à¥Í¡¼¥ë
+#ã‚µãƒ ãƒãƒ¼ãƒ«
 
 # mplayer -ss 00:01:20 -vo jpeg:outdir=/home/foltia/php/tv/443MNV01 -ao null -sstep 1 -frames 3  -v 3 /home/foltia/php/tv/443-07-20050218-0030.m2p
 #2005/02/22_18:30:05 singletranscode TRCNSTART vfr4psp.sh /home/foltia/php/tv/447-21-20050222-1800.m2p 44721 /home/foltia/php/tv/447MNV01 3
@@ -289,7 +289,7 @@ chomp $timestamp;
 # rm -rf 00000002.jpg  
 system("rm -rf $pspdirname/0000000*.jpg ");
 
-# MP4¥Õ¥¡¥¤¥ëÌ¾¤òPID¥ì¥³¡¼¥É¤Ë½ñ¤­¹ş¤ß
+# MP4ãƒ•ã‚¡ã‚¤ãƒ«åã‚’PIDãƒ¬ã‚³ãƒ¼ãƒ‰ã«æ›¸ãè¾¼ã¿
 unless ($pid eq ""){
 	$sth = $dbh->prepare($stmt{'singletranscode.6'});
 	$sth->execute("M4V$pspfilname.MP4", $pid);
@@ -297,9 +297,9 @@ unless ($pid eq ""){
 }else{
 &writelog("singletranscode PID not found");
 }
-# MP4¥Õ¥¡¥¤¥ëÌ¾¤òfoltia_mp4filesÁŞÆş
+# MP4ãƒ•ã‚¡ã‚¤ãƒ«åã‚’foltia_mp4filesæŒ¿å…¥
     $sth = $dbh->prepare($stmt{'singletranscode.7'});
     $sth->execute($tid, "M4V$pspfilname.MP4");
     &writelog("singletranscode UPDATEmp4DB $stmt{'singletranscode.7'}");
 
-}#PSP¥È¥é¥³¥ó¤¢¤ê
+}#PSPãƒˆãƒ©ã‚³ãƒ³ã‚ã‚Š
