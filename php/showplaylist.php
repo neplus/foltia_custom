@@ -109,7 +109,8 @@ if (file_exists("./selectcaptureimage.php") ) {
 	print "			<th align=\"left\">キャプ</th>\n";
 }
 //旧仕様
-if($list == "raw"){print "<th align=\"left\">size</th>\n";}
+#if($list == "raw"){print "<th align=\"left\">size</th>\n";}
+print "<th align=\"left\">size</th>\n";
 ?>
 		</tr>
 	</thead> 
@@ -192,11 +193,11 @@ if($list == "raw"){
 				//	$capimgpath = preg_replace("/.m2p/", "", $fName);
 				print "			<td align=\"left\"> N/A </td>\n";
 			}
-			if($list == "raw"){
+			#if($list == "raw"){
 				$size = filesize($pathfName);
 				$size = round(($size/1073741824),2);
 				print "<td align=\"left\">$size</td>\n";
-			}
+			#}
 
 			print "</tr>\n
 				";
@@ -218,13 +219,13 @@ if($list == "raw"){
 		foltia_subtitle.subtitle  ,
 		foltia_m2pfiles.m2pfilename  ,
 		foltia_subtitle.pid   
-		FROM foltia_subtitle , foltia_program , foltia_m2pfiles 
-		WHERE foltia_program.tid = foltia_subtitle.tid  
-		AND foltia_subtitle.m2pfilename = foltia_m2pfiles.m2pfilename 
-		ORDER BY foltia_subtitle.tid  DESC , foltia_subtitle.startdatetime  ASC 
-		LIMIT $lim OFFSET $st
+			FROM foltia_subtitle , foltia_program , foltia_m2pfiles 
+			WHERE foltia_program.tid = foltia_subtitle.tid  
+			AND foltia_subtitle.m2pfilename = foltia_m2pfiles.m2pfilename 
+			ORDER BY foltia_subtitle.tid  DESC , foltia_subtitle.startdatetime  ASC 
+			LIMIT $lim OFFSET $st
 
-		";
+			";
 }else{
 	$query = "
 		SELECT 
@@ -234,12 +235,12 @@ if($list == "raw"){
 		foltia_subtitle.subtitle  ,
 		foltia_m2pfiles.m2pfilename  ,
 		foltia_subtitle.pid   
-		FROM foltia_subtitle , foltia_program , foltia_m2pfiles 
-		WHERE foltia_program.tid = foltia_subtitle.tid  
-		AND foltia_subtitle.m2pfilename = foltia_m2pfiles.m2pfilename 
-		ORDER BY foltia_subtitle.startdatetime DESC 
-		LIMIT $lim OFFSET $st
-		";
+			FROM foltia_subtitle , foltia_program , foltia_m2pfiles 
+			WHERE foltia_program.tid = foltia_subtitle.tid  
+			AND foltia_subtitle.m2pfilename = foltia_m2pfiles.m2pfilename 
+			ORDER BY foltia_subtitle.startdatetime DESC 
+			LIMIT $lim OFFSET $st
+			";
 }
 
 //$rs = m_query($con, $query, "DBクエリに失敗しました");
@@ -249,10 +250,10 @@ $rowdata = $rs->fetch();
 /////////////////////////////////////////
 //テーブルの総数取得
 $query2 = "
-	SELECT COUNT(*) AS cnt FROM foltia_subtitle , foltia_program , foltia_m2pfiles
-	WHERE foltia_program.tid = foltia_subtitle.tid
-	AND foltia_subtitle.m2pfilename = foltia_m2pfiles.m2pfilename
-	";
+SELECT COUNT(*) AS cnt FROM foltia_subtitle , foltia_program , foltia_m2pfiles
+WHERE foltia_program.tid = foltia_subtitle.tid
+AND foltia_subtitle.m2pfilename = foltia_m2pfiles.m2pfilename
+";
 $rs2 = sql_query($con, $query2, "DB\?\ィ\e?E?oCO???T????");
 $rowdata2 = $rs2->fetch();
 if (! $rowdata2) {
@@ -298,12 +299,12 @@ if ($rowdata) {
 			$capimgpath = preg_replace("/.m2.+/", "", $fName);
 			print "			<td align=\"left\"><a href=\"./selectcaptureimage.php?pid=$pid\">キャプ</a></td>\n";
 		}
+		$size = filesize("/tv/php/tv/$fName");
+		$size = round(($size/1073741824),2);
+		print "<td align=\"left\">$size</td>\n";
 
 		print "</tr>\n
 			";
-
-		//}
-
 
 	} while ($rowdata = $rs->fetch());
 }else{
@@ -318,8 +319,8 @@ if ($rowdata) {
 }//end if
 
 print "</tbody>
-	</table>
-	</FORM>\n";
+</table>
+</FORM>\n";
 
 //////////////////////////////////////////////////////////////////////
 //クエリ代入
@@ -338,11 +339,11 @@ if ($list== "title"){
 		SELECT distinct
 		foltia_program.tid,
 		foltia_program.title 
-		FROM foltia_subtitle , foltia_program , foltia_m2pfiles 
-		WHERE foltia_program.tid = foltia_subtitle.tid  
-		AND foltia_subtitle.m2pfilename = foltia_m2pfiles.m2pfilename 
-		ORDER BY foltia_program.tid DESC 
-		";
+			FROM foltia_subtitle , foltia_program , foltia_m2pfiles 
+			WHERE foltia_program.tid = foltia_subtitle.tid  
+			AND foltia_subtitle.m2pfilename = foltia_m2pfiles.m2pfilename 
+			ORDER BY foltia_program.tid DESC 
+			";
 
 	//$rs = m_query($con, $query, "DBクエリに失敗しました");
 	$rs = sql_query($con, $query, "DBクエリに失敗しました");

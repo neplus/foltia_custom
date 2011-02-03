@@ -168,8 +168,7 @@ if ($filestatus <= $FILESTATUSTRANSCODEFFMPEG){
 #	$ffmpegencopt = " -s 640x352 -deinterlace -r 29.97 -vcodec libx264 -g 100 -b 600000 -level 13 -loop 1 -sc_threshold 60 -partp4x4 1 -rc_eq 'blurCplx^(1-qComp)' -refs 3 -maxrate 700000 -async 50 -f h264 $filenamebody.264";
 # for ffmpeg 0.5 or later
 	$ffmpegencopt = " -threads 0  -s 640x352 -deinterlace -r 29.97 -vcodec libx264 -vpre default   -g 100 -b 600000 -level 13 -sc_threshold 60 -rc_eq 'blurCplx^(1-qComp)' -refs 3 -maxrate 700000 -async 50 -f h264 $filenamebody.264";
-	}
-	elsif($trconqty == 4){#1280x720
+	}elsif($trconqty == 4){#1280x720
 		$ffmpegencopt = "-f h264 -vcodec libx264 -fpre /usr/share/ffmpeg/libx264-hq-ts.ffpreset -r 30000/1001 -aspect 16:9 -s 1280x720 -bufsize 20000k -b 1000000 -maxrate 2500000 $filenamebody.264";
 	}
 	&changefilestatus($pid,$FILESTATUSTRANSCODEFFMPEG);
