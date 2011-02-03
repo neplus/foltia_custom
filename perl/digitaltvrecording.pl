@@ -330,6 +330,7 @@ sub calldigitalrecorder{
 			&writelog("digitaltvrecording DEBUG recpt1 --b25  $originalrecch $reclengthsec $outputfile  ");
 			if($originalrecch == 16) {
 				$oserr = system("$toolpath/perl/tool/recpt1 --b25 $originalrecch $reclengthsec $outputfile  ");
+				}
 			}else{
 				$oserr = system("$toolpath/perl/tool/recpt1 --b25 --sid hd $originalrecch $reclengthsec $outputfile  ");
 			}
@@ -343,47 +344,5 @@ sub calldigitalrecorder{
 		&writelog("digitaltvrecording :ERROR :recpt1  not found. You must install $toolpath/tool/b25 and $toolpath/tool/recpt1.");
 		$errorflag = 1;
 	}
-
-=pod
-#TS分割でのスリム化
-	if(-e "$toolpath/perl/tool/TsSplitter.exe"){
-#BS1/BS2/TSなどのスプリットを
-		if ($bssplitflag == 101){#BS1
-			system("wine $toolpath/perl/tool/TsSplitter.exe  -EIT -ECM  -EMM  -OUT \"$outputpath\" -HD  -SD2 -SD3 -1SEG  -LOGFILE -WAIT2 $outputfile");
-			$splitfile = $outputfile;
-			$splitfile =~ s/\.m2t$/_SD1.m2t/;
-			if (-e "$splitfile"){
-				system("rm -rf $outputfile ; mv $splitfile $outputfile");
-				&writelog("digitaltvrecording DEBUG rm -rf $outputfile ; mv $splitfile $outputfile: $?.");
-			}else{
-				&writelog("digitaltvrecording ERROR File not found:$splitfile.");
-			}
-		}elsif($bssplitflag == 102){#BS2
-			system("wine $toolpath/perl/tool/TsSplitter.exe  -EIT -ECM  -EMM  -OUT \"$outputpath\" -HD  -SD1 -SD3 -1SEG  -LOGFILE -WAIT2 $outputfile");
-			&writelog("wine $toolpath/perl/tool/TsSplitter.exe  -EIT -ECM  -EMM  -OUT \"$outputpath\" -HD  -SD1 -SD3 -1SEG  -LOGFILE -WAIT2 $outputfile");
-			$splitfile = $outputfile;
-			$splitfile =~ s/\.m2t$/_SD2.m2t/;
-			if (-e "$splitfile"){
-				system("rm -rf $outputfile ; mv $splitfile $outputfile");
-				&writelog("digitaltvrecording DEBUG rm -rf $outputfile ; mv $splitfile $outputfile: $?.");
-			}else{
-				&writelog("digitaltvrecording ERROR File not found:$splitfile.");
-			}
-		}else{#その他録画データ
-			system("wine $toolpath/perl/tool/TsSplitter.exe  -EIT -ECM  -EMM  -OUT \"$outputpath\" -HD  -SD1 -SD3 -1SEG  -LOGFILE -WAIT2 $outputfile");
-			$splitfile = $outputfile;
-			$splitfile =~ s/\.m2t$/_HD.m2t/;
-			if (-e "$splitfile"){
-				system("rm -rf $outputfile ; mv $splitfile $outputfile");
-				&writelog("digitaltvrecording DEBUG rm -rf $outputfile ; mv $splitfile $outputfile: $?.");
-			}else{
-				&writelog("digitaltvrecording ERROR File not found:$splitfile.");
-			}
-			&writelog("digitaltvrecording ERROR $toolpath/perl/tool/TsSplitter.exe not found.");
-		}
-	}else{
-		&writelog("digitaltvrecording ERROR $toolpath/perl/tool/TsSplitter.exe not found.");
-	}#end TS分割でのスリム化
-=cut
 }#end calldigitalrecorder
 

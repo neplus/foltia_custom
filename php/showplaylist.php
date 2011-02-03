@@ -253,7 +253,7 @@ $query2 = "
 	WHERE foltia_program.tid = foltia_subtitle.tid
 	AND foltia_subtitle.m2pfilename = foltia_m2pfiles.m2pfilename
 	";
-$rs2 = sql_query($con, $query2, "DB\?\ｨ\e?E?oCO???T????");
+$rs2 = sql_query($con, $query2, "DB\?\ィ\e?E?oCO???T????");
 $rowdata2 = $rs2->fetch();
 if (! $rowdata2) {
 	die_exit("番組データがありません<BR>");

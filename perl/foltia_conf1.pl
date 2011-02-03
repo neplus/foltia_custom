@@ -19,7 +19,7 @@ $svideoinputnum = 1;#IO-DATA DV-MVP/RX,RX2,RX2W
 $comvideoinputnum= 2;#IO-DATA DV-MVP/RX,RX2,RX2W
 $haveirdaunit = 1;#Tira-2<http://www.home-electro.com/tira2.php>をつないでいるときに1,なければ0
 $mp4filenamestyle = 1 ;#0:PSP ファームウェアver.2.80より前と互換性を持つファイル名 1;よりわかりやすいファイル名
-$trconqty = 3;
+$trconqty = 4;
 #0:PSP/iPod XviD MPEG4(旧式):faacとMPEG4IPを使って変換(古い設定)
 #1:iPod Xvid MPEG4 標準画質 15fps 300kbps / デジタル  360x202 24.00fps 300kbps
 #2:iPod H.264 中画質 24fps 300kbps / デジタル 480x272  29.97fps 400kbps
