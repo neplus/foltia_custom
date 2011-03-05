@@ -142,8 +142,6 @@ $filenamebody =~ s/.m2t$|.ts$|.m2p$|.mpg$|.aac$//gi;
 if ($inputmpeg2 =~ /m2t$|ts$|aac$/i){
 
 if ($filestatus <= $FILESTATUSTRANSCODETSSPLITTING){
-		unlink("${filenamebody}_tss.m2t");
-		unlink("${filenamebody}_HD.m2t");
 }
 if ($filestatus <= $FILESTATUSTRANSCODEFFMPEG){
 	unlink("$filenamebody.264");
@@ -168,45 +166,44 @@ if ($filestatus <= $FILESTATUSTRANSCODEFFMPEG){
 #	$ffmpegencopt = " -s 640x352 -deinterlace -r 29.97 -vcodec libx264 -g 100 -b 600000 -level 13 -loop 1 -sc_threshold 60 -partp4x4 1 -rc_eq 'blurCplx^(1-qComp)' -refs 3 -maxrate 700000 -async 50 -f h264 $filenamebody.264";
 # for ffmpeg 0.5 or later
 	$ffmpegencopt = " -threads 0  -s 640x352 -deinterlace -r 29.97 -vcodec libx264 -vpre default   -g 100 -b 600000 -level 13 -sc_threshold 60 -rc_eq 'blurCplx^(1-qComp)' -refs 3 -maxrate 700000 -async 50 -f h264 $filenamebody.264";
-	}elsif($trconqty == 4){#1280x720
-		$ffmpegencopt = "-f h264 -vcodec libx264 -fpre /usr/share/ffmpeg/libx264-hq-ts.ffpreset -r 30000/1001 -aspect 16:9 -s 1280x720 -bufsize 20000k -b 1000000 -maxrate 2500000 $filenamebody.264";
+	}elsif($trconqty == 4){#1280x720p
+	$ffmpegencopt = "-f h264 -vcodec libx264 -fpre /usr/share/ffmpeg/libx264-hq-ts.ffpreset -r 30000/1001 -aspect 16:9 -s 1280x720 -bufsize 20000k -b 1000000 -maxrate 2500000 $filenamebody.264";
 	}
+
 	&changefilestatus($pid,$FILESTATUSTRANSCODEFFMPEG);
 #	&writelog("ipodtranscode ffmpeg $filenamebody.264");
 #	system ("ffmpeg -y -i $trcnmpegfile $cropopt $ffmpegencopt");
 #まずTsSplitする →ワンセグをソースにしてしまわないように
 	if (! -e "$filenamebody.264"){
 		&changefilestatus($pid,$FILESTATUSTRANSCODETSSPLITTING);
-		unlink("${filenamebody}_tss.m2t");
-		unlink("${filenamebody}_HD.m2t");
-		if (-e "$toolpath/perl/tool/tss.py"){
-			&writelog("ipodtranscode tss $inputmpeg2");
-			system("$toolpath/perl/tool/tss.py $inputmpeg2");
-		}else{
-# TsSplit
+		#if (-e "$toolpath/perl/tool/tss.py"){
+		#&writelog("ipodtranscode tss $inputmpeg2");
+		#system("$toolpath/perl/tool/tss.py $inputmpeg2");
+		#}else{
+		# TsSplit
 #		&writelog("ipodtranscode TsSplitter $inputmpeg2");
 #		system("wine $toolpath/perl/tool/TsSplitter.exe  -EIT -ECM  -EMM -SD -1SEG -WAIT2 $inputmpeg2");
-		}
-		if(-e "${filenamebody}_tss.m2t"){
-			$trcnmpegfile = "${filenamebody}_tss.m2t";
-		}elsif (-e "${filenamebody}_HD.m2t"){
-			$trcnmpegfile = "${filenamebody}_HD.m2t";
-		}else{
-			&writelog("ipodtranscode ERR NOT Exist ${filenamebody}_HD.m2t");
-			$trcnmpegfile = $inputmpeg2 ;
-		}
-#Splitファイルの確認
+		#}
+		#if(-e "${filenamebody}_tss.m2t"){
+		#$trcnmpegfile = "${filenamebody}_tss.m2t";
+		#}elsif (-e "${filenamebody}_HD.m2t"){
+		#$trcnmpegfile = "${filenamebody}_HD.m2t";
+		#}else{
+		#&writelog("ipodtranscode ERR NOT Exist ${filenamebody}_HD.m2t");
+		$trcnmpegfile = $inputmpeg2 ;
+		#}
+		#Splitファイルの確認
 		$trcnmpegfile = &validationsplitfile($inputmpeg2,$trcnmpegfile);
-#tss.pyに失敗してたなら強制的にWINEでTsSplit.exe
-		if($trcnmpegfile eq $inputmpeg2){
-
-# TsSplit
-			&writelog("ipodtranscode WINE TsSplitter.exe $inputmpeg2");
-			system("wine $toolpath/perl/tool/TsSplitter.exe -EIT -ECM  -EMM -SD -1SEG -WAIT2 $inputmpeg2");
-			if (-e "${filenamebody}_HD.m2t"){
-				$trcnmpegfile = "${filenamebody}_HD.m2t";
-#Splitファイルの確認
-					$trcnmpegfile = &validationsplitfile($inputmpeg2,$trcnmpegfile);
+		#tss.pyに失敗してたなら強制的にWINEでTsSplit.exe
+		#if($trcnmpegfile eq $inputmpeg2){
+		
+		# TsSplit
+		#&writelog("ipodtranscode WINE TsSplitter.exe $inputmpeg2");
+		#system("wine $toolpath/perl/tool/TsSplitter.exe -EIT -ECM  -EMM -SD -1SEG -WAIT2 $inputmpeg2");
+		#if (-e "${filenamebody}_HD.m2t"){
+		#	$trcnmpegfile = "${filenamebody}_HD.m2t";
+			#Splitファイルの確認
+		#	$trcnmpegfile = &validationsplitfile($inputmpeg2,$trcnmpegfile);
 #			if($trcnmpegfile ne $inputmpeg2){
 #			&changefilestatus($pid,$FILESTATUSTRANSCODEFFMPEG);
 #			&writelog("ipodtranscode ffmpeg retry ; WINE TsSplitter.exe $trcnmpegfile");
@@ -214,14 +211,14 @@ if ($filestatus <= $FILESTATUSTRANSCODEFFMPEG){
 #			}else{
 #			&writelog("ipodtranscode WINE TsSplit.exe fail");
 #			}
-			}else{
-				&writelog("ipodtranscode WINE TsSplitter.exe ;Not exist ${filenamebody}_HD.m2t");
-			}#endif -e ${filenamebody}_HD.m2t
-
-		}#endif $trcnmpegfile eq $inputmpeg2
-
-
-#再ffmpeg
+		#}else{
+		#&writelog("ipodtranscode WINE TsSplitter.exe ;Not exist ${filenamebody}_HD.m2t");
+		#}#endif -e ${filenamebody}_HD.m2t
+		
+		#}#endif $trcnmpegfile eq $inputmpeg2
+		
+		
+		#再ffmpeg
 		&changefilestatus($pid,$FILESTATUSTRANSCODEFFMPEG);
 		&writelog("ipodtranscode ffmpeg retry $filenamebody.264");
 		system ("ffmpeg -y -i $trcnmpegfile $cropopt $ffmpegencopt");
@@ -233,16 +230,16 @@ if ($filestatus <= $FILESTATUSTRANSCODEFFMPEG){
 		&writelog("ipodtranscode ffmpeg retry no crop $filenamebody.264");
 		system ("ffmpeg -y -i $trcnmpegfile $ffmpegencopt");
 	}
-#強制的にWINEでTsSplit.exe
-	if (! -e "$filenamebody.264"){
-	}
-#それでもエラーならsplitしてないファイルをターゲットに
-	if (! -e "$filenamebody.264"){
-#再ffmpeg
-		&changefilestatus($pid,$FILESTATUSTRANSCODEFFMPEG);
-		&writelog("ipodtranscode ffmpeg retry No splited originalTS file $filenamebody.264");
-		system ("ffmpeg -y -i $inputmpeg2 $ffmpegencopt");
-	}
+	#強制的にWINEでTsSplit.exe
+	#if (! -e "$filenamebody.264"){
+	#}
+	#それでもエラーならsplitしてないファイルをターゲットに
+	#if (! -e "$filenamebody.264"){
+	#	#再ffmpeg
+	#	&changefilestatus($pid,$FILESTATUSTRANSCODEFFMPEG);
+	#	&writelog("ipodtranscode ffmpeg retry No splited originalTS file $filenamebody.264");
+	#	system ("ffmpeg -y -i $inputmpeg2 $ffmpegencopt");
+	#}
 }
 if ($filestatus <= $FILESTATUSTRANSCODEWAVE){
 # WAVE出力
@@ -348,7 +345,6 @@ if ($filestatus <= $FILESTATUSTRANSCODECOMPLETE){
 		&writelog("ipodtranscode ERR ; Fail.Giving up!  MAQ${mp4filenamestring}.MP4");
 		&changefilestatus($pid,999);
 	}
-	unlink("${filenamebody}_HD.m2t");
 # ConfigによってTSファイルは常にsplitした状態にするかどうか選択
 # B25失敗したときにここが走るとファイルぶっ壊れるので検証を入れる
 #
@@ -360,75 +356,74 @@ if ($filestatus <= $FILESTATUSTRANSCODECOMPLETE){
 #		
 #		}
 #	}
-	unlink("${filenamebody}_tss.m2t");
 	unlink("$filenamebody.264");
 	unlink("$filenamebody.wav");
 	unlink("$filenamebody.base.mp4");
 
 }
 
-}else{ #デジタルかアナログか
-#print "MPEG2\n";
-# アスペクト比
-	if ($aspect == 16){
-		$cropopt = " -croptop 70 -cropbottom 60 -cropleft  8 -cropright 14 -aspect 16:9 ";
-	}else{
-		$cropopt = " -croptop 8 -cropbottom 8 -cropleft  8 -cropright 14 ";
-	}
-# クオリティごとに
-	if (($trconqty eq "")||($trconqty == 1)){
-#$encodeoption = "-y -i $inputmpeg2 -vcodec xvid $cropopt -s 320x240 -b 300 -bt 128 -r 14.985 -bufsize 192 -maxrate 512 -minrate 0 -deinterlace -acodec aac -ab 128 -ar 24000 -ac 2 $movietitle ${mp4outdir}M4V${mp4filenamestring}.MP4";
-		$mp4file = "${mp4outdir}M4V${mp4filenamestring}.MP4";
-		$encodeoption = "-y -i $inputmpeg2 vcodec libxvid $cropopt -s 320x240 -b 300 -bt 128 -r 14.985 -deinterlace -acodec libfaac -f ipod  ${mp4outdir}M4V${mp4filenamestring}.MP4";
-#time ffmpeg -y  -i /home/foltia/php/tv/trcntest/nanoha-As-op.mpg -vcodec libxvid -croptop 8 -cropbottom 8 -cropleft  8 -cropright 14 -s 320x240 -b 300 -bt 128 -r 14.985 -deinterlace -acodec libfaac -f ipod M4V-Nanoha-As-OP.MP4
-# 32sec
-# 2.1MB
-	}elsif($trconqty == 2){ 
-#$encodeoption = "-y -i $inputmpeg2  -target ipod -profile 51 -level 30 $cropopt -s 320x240 -b 300 -r 24 -acodec aac -ar 32000 -ac 2 $movietitle ${mp4outdir}MAQ${mp4filenamestring}.MP4";
-		$mp4file = "${mp4outdir}MAQ${mp4filenamestring}.MP4";
-		$encodeoption = "-y -i $inputmpeg2 -vcodec libx264 -croptop 8 $cropopt -s 320x240 -b 300 -bt 128 -r 24 -deinterlace -acodec libfaac -f ipod  ${mp4outdir}MAQ${mp4filenamestring}.MP4";
-#time ffmpeg -y  -i /home/foltia/php/tv/trcntest/nanoha-As-op.mpg -vcodec libx264 -croptop 8 -cropbottom 8 -cropleft  8 -cropright 14 -s 320x240 -b 300 -bt 128 -r 24 -deinterlace -acodec libfaac -f ipod MAQ-Nanoha-As-OP.MP4
-# 2min22sec
-# 6.4MB
-	}elsif($trconqty == 3){ 
-#$encodeoption = "-y -i $inputmpeg2  -target ipod -profile 51 -level 30 $cropopt  -acodec aac -ab 96 -vcodec h264  -maxrate 700 -minrate 0 -deinterlace -b 300 -ar 32000 -mbd 2 -coder 1 -cmp 2 -subcmp 2 -s 320x240 -r 30000/1001  -flags loop -trellis 2 -partitions parti4x4+parti8x8+partp4x4+partp8x8+partb8x8 $movietitle ${mp4outdir}MAQ${mp4filenamestring}.MP4";
-		$mp4file = "${mp4outdir}MAQ${mp4filenamestring}.MP4";
-		$encodeoption = "-y -i $inputmpeg2  -vcodec libx264 $cropopt -s 320x240 -b 380 -bt 128 -r 29.97 -deinterlace -acodec libfaac -f ipod  ${mp4outdir}MAQ${mp4filenamestring}.MP4";
-#time ffmpeg -y  -i /home/foltia/php/tv/trcntest/nanoha-As-op.mpg -vcodec libx264 -croptop 8 -cropbottom 8 -cropleft  8 -cropright 14 -s 320x240 -b 380 -bt 128 -r 29.97 -deinterlace -acodec libfaac -f ipod MAQ-Nanoha-As-OP.MP4
-#  2m53.912s
-# 7MB
-	}elsif($trconqty == 4){
-#$encodeoption = "-y -i $inputmpeg2  -target ipod -profile 51 -level 30 $cropopt -s 480x360 -b 400 -r 24 -acodec aac -ar 32000 -ac 2 $movietitle ${mp4outdir}MAQ${mp4filenamestring}.MP4";
-		$mp4file = "${mp4outdir}MAQ${mp4filenamestring}.MP4";
-		$encodeoption = "-y -i $inputmpeg2 -vcodec libx264 $cropopt -s 640x480 -b 500 -maxrate 700 -bt 128 -r 29.97 -deinterlace -acodec libfaac -f ipod ${mp4outdir}MAQ${mp4filenamestring}.MP4";
-#time ffmpeg -y  -i /home/foltia/php/tv/trcntest/nanoha-As-op.mpg -vcodec libx264 -croptop 8 -cropbottom 8 -cropleft  8 -cropright 14 -s 640x480 -b 500  -maxrate 700 -bt 128 -r 29.97 -deinterlace -acodec libfaac -f ipod MAQ-Nanoha-As-OP.MP4
-# 11m0.294s
-# 20MB
-	}elsif($trconqty == 5){ 
-#$encodeoption = "-y -i $inputmpeg2  -target ipod -profile 51 -level 30 $cropopt  -acodec aac -ab 96 -vcodec h264  -maxrate 700 -minrate 0 -deinterlace -b 400 -ar 32000 -mbd 2 -coder 1 -cmp 2 -subcmp 2 -s 480x360 -r 30000/1001  -flags loop -trellis 2 -partitions parti4x4+parti8x8+partp4x4+partp8x8+partb8x8 $movietitle ${mp4outdir}MAQ${mp4filenamestring}.MP4";
-		$mp4file = "${mp4outdir}MAQ${mp4filenamestring}.MP4";
-		$encodeoption = "-y -i $inputmpeg2 -vcodec libx264 -croptop 8 $cropopt -s 640x480 -b 500  -maxrate 700 -bt 128 -r 29.97 -deinterlace -flags loop -trellis 2 -partitions parti4x4+parti8x8+partp4x4+partp8x8+partb8x8 -acodec libfaac -f ipod ${mp4outdir}MAQ${mp4filenamestring}.MP4";
-#time ffmpeg -y  -i /home/foltia/php/tv/trcntest/nanoha-As-op.mpg -vcodec libx264 -croptop 8 -cropbottom 8 -cropleft  8 -cropright 14 -s 640x480 -b 500  -maxrate 700 -bt 128 -r 29.97 -deinterlace -flags loop -trellis 2 -partitions parti4x4+parti8x8+partp4x4+partp8x8+partb8x8  -acodec libfaac -f ipod MAQ-Nanoha-As-OP.MP4
-#  14m14.033s
-# 18MB
-	}
-
-	$encodeoptionlog = $encodeoption;
-	Jcode::convert(\$encodeoptionlog,'euc');
-
-	&writelog("ipodtranscode START QTY=$trconqty $encodeoptionlog");
-#print "ffmpeg $encodeoptionlog \n";
-	&changefilestatus($pid,$FILESTATUSTRANSCODEFFMPEG);
-	system ("ffmpeg  $encodeoption ");
-	&writelog("ipodtranscode FFEND $inputmpeg2");
-	&changefilestatus($pid,$FILESTATUSTRANSCODECOMPLETE);
-#もう要らなくなった #2008/11/14 
-#&writelog("ipodtranscode mp4psp -p $mp4file $movietitleeuc");
-#system("/usr/local/bin/mp4psp -p $mp4file '$movietitleeuc' ");
-#&writelog("ipodtranscode mp4psp COMPLETE  $mp4file ");
-
-	&updatemp4file();
-}#endif #デジタルかアナログか
+}#else{ #デジタルかアナログか
+	#print "MPEG2\n";
+	# アスペクト比
+#	if ($aspect == 16){
+#	$cropopt = " -croptop 70 -cropbottom 60 -cropleft  8 -cropright 14 -aspect 16:9 ";
+#	}else{
+#	$cropopt = " -croptop 8 -cropbottom 8 -cropleft  8 -cropright 14 ";
+#	}
+## クオリティごとに
+#if (($trconqty eq "")||($trconqty == 1)){
+##$encodeoption = "-y -i $inputmpeg2 -vcodec xvid $cropopt -s 320x240 -b 300 -bt 128 -r 14.985 -bufsize 192 -maxrate 512 -minrate 0 -deinterlace -acodec aac -ab 128 -ar 24000 -ac 2 $movietitle ${mp4outdir}M4V${mp4filenamestring}.MP4";
+#$mp4file = "${mp4outdir}M4V${mp4filenamestring}.MP4";
+#$encodeoption = "-y -i $inputmpeg2 vcodec libxvid $cropopt -s 320x240 -b 300 -bt 128 -r 14.985 -deinterlace -acodec libfaac -f ipod  ${mp4outdir}M4V${mp4filenamestring}.MP4";
+##time ffmpeg -y  -i /home/foltia/php/tv/trcntest/nanoha-As-op.mpg -vcodec libxvid -croptop 8 -cropbottom 8 -cropleft  8 -cropright 14 -s 320x240 -b 300 -bt 128 -r 14.985 -deinterlace -acodec libfaac -f ipod M4V-Nanoha-As-OP.MP4
+## 32sec
+## 2.1MB
+#}elsif($trconqty == 2){ 
+##$encodeoption = "-y -i $inputmpeg2  -target ipod -profile 51 -level 30 $cropopt -s 320x240 -b 300 -r 24 -acodec aac -ar 32000 -ac 2 $movietitle ${mp4outdir}MAQ${mp4filenamestring}.MP4";
+#$mp4file = "${mp4outdir}MAQ${mp4filenamestring}.MP4";
+#$encodeoption = "-y -i $inputmpeg2 -vcodec libx264 -croptop 8 $cropopt -s 320x240 -b 300 -bt 128 -r 24 -deinterlace -acodec libfaac -f ipod  ${mp4outdir}MAQ${mp4filenamestring}.MP4";
+##time ffmpeg -y  -i /home/foltia/php/tv/trcntest/nanoha-As-op.mpg -vcodec libx264 -croptop 8 -cropbottom 8 -cropleft  8 -cropright 14 -s 320x240 -b 300 -bt 128 -r 24 -deinterlace -acodec libfaac -f ipod MAQ-Nanoha-As-OP.MP4
+## 2min22sec
+## 6.4MB
+#}elsif($trconqty == 3){ 
+##$encodeoption = "-y -i $inputmpeg2  -target ipod -profile 51 -level 30 $cropopt  -acodec aac -ab 96 -vcodec h264  -maxrate 700 -minrate 0 -deinterlace -b 300 -ar 32000 -mbd 2 -coder 1 -cmp 2 -subcmp 2 -s 320x240 -r 30000/1001  -flags loop -trellis 2 -partitions parti4x4+parti8x8+partp4x4+partp8x8+partb8x8 $movietitle ${mp4outdir}MAQ${mp4filenamestring}.MP4";
+#$mp4file = "${mp4outdir}MAQ${mp4filenamestring}.MP4";
+#$encodeoption = "-y -i $inputmpeg2  -vcodec libx264 $cropopt -s 320x240 -b 380 -bt 128 -r 29.97 -deinterlace -acodec libfaac -f ipod  ${mp4outdir}MAQ${mp4filenamestring}.MP4";
+##time ffmpeg -y  -i /home/foltia/php/tv/trcntest/nanoha-As-op.mpg -vcodec libx264 -croptop 8 -cropbottom 8 -cropleft  8 -cropright 14 -s 320x240 -b 380 -bt 128 -r 29.97 -deinterlace -acodec libfaac -f ipod MAQ-Nanoha-As-OP.MP4
+##  2m53.912s
+## 7MB
+#}elsif($trconqty == 4){
+##$encodeoption = "-y -i $inputmpeg2  -target ipod -profile 51 -level 30 $cropopt -s 480x360 -b 400 -r 24 -acodec aac -ar 32000 -ac 2 $movietitle ${mp4outdir}MAQ${mp4filenamestring}.MP4";
+#$mp4file = "${mp4outdir}MAQ${mp4filenamestring}.MP4";
+#$encodeoption = "-y -i $inputmpeg2 -vcodec libx264 $cropopt -s 640x480 -b 500 -maxrate 700 -bt 128 -r 29.97 -deinterlace -acodec libfaac -f ipod ${mp4outdir}MAQ${mp4filenamestring}.MP4";
+##time ffmpeg -y  -i /home/foltia/php/tv/trcntest/nanoha-As-op.mpg -vcodec libx264 -croptop 8 -cropbottom 8 -cropleft  8 -cropright 14 -s 640x480 -b 500  -maxrate 700 -bt 128 -r 29.97 -deinterlace -acodec libfaac -f ipod MAQ-Nanoha-As-OP.MP4
+## 11m0.294s
+## 20MB
+#}elsif($trconqty == 5){ 
+##$encodeoption = "-y -i $inputmpeg2  -target ipod -profile 51 -level 30 $cropopt  -acodec aac -ab 96 -vcodec h264  -maxrate 700 -minrate 0 -deinterlace -b 400 -ar 32000 -mbd 2 -coder 1 -cmp 2 -subcmp 2 -s 480x360 -r 30000/1001  -flags loop -trellis 2 -partitions parti4x4+parti8x8+partp4x4+partp8x8+partb8x8 $movietitle ${mp4outdir}MAQ${mp4filenamestring}.MP4";
+#$mp4file = "${mp4outdir}MAQ${mp4filenamestring}.MP4";
+#$encodeoption = "-y -i $inputmpeg2 -vcodec libx264 -croptop 8 $cropopt -s 640x480 -b 500  -maxrate 700 -bt 128 -r 29.97 -deinterlace -flags loop -trellis 2 -partitions parti4x4+parti8x8+partp4x4+partp8x8+partb8x8 -acodec libfaac -f ipod ${mp4outdir}MAQ${mp4filenamestring}.MP4";
+##time ffmpeg -y  -i /home/foltia/php/tv/trcntest/nanoha-As-op.mpg -vcodec libx264 -croptop 8 -cropbottom 8 -cropleft  8 -cropright 14 -s 640x480 -b 500  -maxrate 700 -bt 128 -r 29.97 -deinterlace -flags loop -trellis 2 -partitions parti4x4+parti8x8+partp4x4+partp8x8+partb8x8  -acodec libfaac -f ipod MAQ-Nanoha-As-OP.MP4
+##  14m14.033s
+## 18MB
+#}
+#
+#$encodeoptionlog = $encodeoption;
+#Jcode::convert(\$encodeoptionlog,'euc');
+#
+#&writelog("ipodtranscode START QTY=$trconqty $encodeoptionlog");
+##print "ffmpeg $encodeoptionlog \n";
+#&changefilestatus($pid,$FILESTATUSTRANSCODEFFMPEG);
+#system ("ffmpeg  $encodeoption ");
+#&writelog("ipodtranscode FFEND $inputmpeg2");
+#&changefilestatus($pid,$FILESTATUSTRANSCODECOMPLETE);
+##もう要らなくなった #2008/11/14 
+##&writelog("ipodtranscode mp4psp -p $mp4file $movietitleeuc");
+##system("/usr/local/bin/mp4psp -p $mp4file '$movietitleeuc' ");
+##&writelog("ipodtranscode mp4psp COMPLETE  $mp4file ");
+#
+#&updatemp4file();
+#}#endif #デジタルかアナログか
 
 $counttranscodefiles = &counttranscodefiles();
 ############################
@@ -523,22 +518,24 @@ sub counttranscodefiles(){
 
 
 sub validationsplitfile{
-	my $inputmpeg2 = $_[0];
-	my $trcnmpegfile = $_[1];
+my $inputmpeg2 = $_[0];
+my $trcnmpegfile = $_[1];
 
-#Split結果確認
-	my $filesizeoriginal = -s $inputmpeg2 ;
-	my $filesizesplit = -s $trcnmpegfile;
-	my $validation = 0;
-	if ($filesizesplit  > 0){
-		$validation = $filesizeoriginal / $filesizesplit   ;
-		if ($validation > 2 ){
-#print "Fail split may be fail.\n";
-			&writelog("ipodtranscode ERR File split may be fail: $filesizeoriginal:$filesizesplit");
-			$trcnmpegfile = $inputmpeg2 ;
-			unlink("${filenamebody}_tss.m2t");
-			unlink("${filenamebody}_HD.m2tt");
-			return ($trcnmpegfile);
+		#Split結果確認
+		my $filesizeoriginal = -s $inputmpeg2 ;
+		my $filesizesplit = -s $trcnmpegfile;
+		my $validation = 0;
+		if ($filesizesplit  > 0){
+			$validation = $filesizeoriginal / $filesizesplit   ;
+			if ($validation > 2 ){
+				#print "Fail split may be fail.\n";
+				&writelog("ipodtranscode ERR File split may be fail: $filesizeoriginal:$filesizesplit");
+				$trcnmpegfile = $inputmpeg2 ;
+				return ($trcnmpegfile);
+			}else{
+				#print "Fail split may be good.\n";
+				return ($trcnmpegfile);
+			}
 		}else{
 #print "Fail split may be good.\n";
 			return ($trcnmpegfile);
@@ -547,8 +544,6 @@ sub validationsplitfile{
 #Fail
 		&writelog("ipodtranscode ERR File split may be fail: $filesizeoriginal:$filesizesplit");
 		$trcnmpegfile = $inputmpeg2 ;
-		unlink("${filenamebody}_tss.m2t");
-		unlink("${filenamebody}_HD.m2tt");
 		return ($trcnmpegfile);
 	}
 }#end sub validationsplitfile

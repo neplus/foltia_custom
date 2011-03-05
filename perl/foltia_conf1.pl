@@ -24,6 +24,7 @@ $trconqty = 4;
 #1:iPod Xvid MPEG4 標準画質 15fps 300kbps / デジタル  360x202 24.00fps 300kbps
 #2:iPod H.264 中画質 24fps 300kbps / デジタル 480x272  29.97fps 400kbps
 #3:iPod H.264 高画質 30fps 300kbps / デジタル  640x352 29.97fps 600kbps
+#4:H.264 1280x720p
 $phptoolpath = $toolpath ;#php版の初期設定の位置。デフォルトではperlと同じ位置
 
 #以下はデフォルトでインストールしてればいじらなくてもいい
