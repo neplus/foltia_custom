@@ -330,7 +330,6 @@ sub calldigitalrecorder{
 			&writelog("digitaltvrecording DEBUG recpt1 --b25  $originalrecch $reclengthsec $outputfile  ");
 			if($originalrecch == 16) {
 				$oserr = system("$toolpath/perl/tool/recpt1 --b25 $originalrecch $reclengthsec $outputfile  ");
-				}
 			}else{
 				$oserr = system("$toolpath/perl/tool/recpt1 --b25 --sid hd $originalrecch $reclengthsec $outputfile  ");
 			}
