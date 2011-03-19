@@ -108,99 +108,97 @@ echo "<div id=contents class=autopagerize_page_element />";
 if (file_exists("./selectcaptureimage.php") ) {
 	print "			<th align=\"left\">キャプ</th>\n";
 }
-//旧仕様
-#if($list == "raw"){print "<th align=\"left\">size</th>\n";}
-print "<th align=\"left\">size</th>\n";
 ?>
+			<th align="left">size(GB)</th>
+			<th align="left">encode</th>
 		</tr>
 	</thead> 
-
 	<tbody>
 
 
 
 <?php
-
-//$list = getgetform('list');
-
-//旧仕様
 if($list == "raw"){
 	exec ("ls -t  $recfolderpath/*.???", $m2pfiles);
 
-
 	foreach($m2pfiles as $pathfName) {
-
 		$fNametmp = split("/",$pathfName);
 		$fName = array_pop($fNametmp);
 		//print "FILENAME:$fName<BR>\n";
 
-		if(($fName == ".") or ($fName == "..") ){ continue; }
-		if ((ereg(".m2.+", $fName))|| (ereg(".aac", $fName))){
+		if(($fName==".") or ($fName=="..")){ continue; }
+		if ((ereg(".m2.+", $fName))||(ereg(".aac", $fName))){
 			$filesplit = split("-",$fName);
 
-			if (preg_match("/^\d+$/", $filesplit[0])) {//	print "File is looks like good:preg<br>\n";
-			if ($filesplit[1] == ""){
-				$query = "
-					SELECT 
-					foltia_program.tid,foltia_program.title,foltia_subtitle.subtitle  
-					FROM foltia_subtitle , foltia_program   
-					WHERE foltia_program.tid = foltia_subtitle.tid  
-					AND foltia_subtitle.tid = ? 
-					";
-				//$rs = m_query($con, $query, "DBクエリに失敗しました");
-				$rs = sql_query($con, $query, "DBクエリに失敗しました",array($filesplit[0]));
-				$rall = $rs->fetchAll();
-				$rowdata = $rall[0];
-				//print" $fName./$rowdata[1]//$rowdata[2]<BR>\n";
-				$title = $rowdata[1];
-				$subtitle = "";
-				$count = "";
+			if (preg_match("/^\d+$/", $filesplit[0])) {
+				if ($filesplit[1] == ""){
+					$query = "
+						SELECT 
+						foltia_program.tid,foltia_program.title,foltia_subtitle.subtitle  
+						FROM foltia_subtitle , foltia_program   
+						WHERE foltia_program.tid = foltia_subtitle.tid  
+						AND foltia_subtitle.tid = ? 
+						";
+					//$rs = m_query($con, $query, "DBクエリに失敗しました");
+					$rs = sql_query($con, $query, "DBクエリに失敗しました",array($filesplit[0]));
+					$rall = $rs->fetchAll();
+					$rowdata = $rall[0];
+					//print" $fName./$rowdata[1]//$rowdata[2]<BR>\n";
+					$title = $rowdata[1];
+					$subtitle = "";
+					$count = "";
 
-			}else{
+				}else{
 
-				$query = "
-					SELECT 
-					foltia_program.tid,foltia_program.title,foltia_subtitle.countno,foltia_subtitle.subtitle  
-					FROM foltia_subtitle , foltia_program   
-					WHERE foltia_program.tid = foltia_subtitle.tid  
-					AND foltia_subtitle.tid = ? 
-					AND foltia_subtitle.countno = ? 
-					";
-				//$rs = m_query($con, $query, "DBクエリに失敗しました");
-				$rs = sql_query($con, $query, "DBクエリに失敗しました",array($filesplit[0],$filesplit[1]));
-				$rall = $rs->fetchAll();
-				$rowdata = $rall[0];
-				//print" $fName./$rowdata[1]/$rowdata[2]/$rowdata[3]<BR>\n";
-				$title = $rowdata[1];
-				$count = $rowdata[2];
-				$subtitle = $rowdata[3];
-			}//if 話数あるかどうか
+					$query = "
+						SELECT 
+						foltia_program.tid,foltia_program.title,foltia_subtitle.countno,foltia_subtitle.subtitle  
+						FROM foltia_subtitle , foltia_program   
+						WHERE foltia_program.tid = foltia_subtitle.tid  
+						AND foltia_subtitle.tid = ? 
+						AND foltia_subtitle.countno = ? 
+						";
+					//$rs = m_query($con, $query, "DBクエリに失敗しました");
+					$rs = sql_query($con, $query, "DBクエリに失敗しました",array($filesplit[0],$filesplit[1]));
+					$rall = $rs->fetchAll();
+					$rowdata = $rall[0];
+					//print" $fName./$rowdata[1]/$rowdata[2]/$rowdata[3]<BR>\n";
+					$title = $rowdata[1];
+					$count = $rowdata[2];
+					$subtitle = $rowdata[3];
+				}//if 話数あるかどうか
 
-			$tid = htmlspecialchars($rowdata[0]);
-			$title = htmlspecialchars($title);
-			$count = htmlspecialchars($count);
-			$subtitle = htmlspecialchars($subtitle);
+				$tid = htmlspecialchars($rowdata[0]);
+				$title = htmlspecialchars($title);
+				$count = htmlspecialchars($count);
+				$subtitle = htmlspecialchars($subtitle);
 
-			//--
-			print "
-				<tr>
-				<td><INPUT TYPE='checkbox' NAME='delete[]' VALUE='$fName'><br></td>
-				<td><A HREF=\"$httpmediamappath/$fName\">$fName</A><br></td>
-				<td><a href=\"http://cal.syoboi.jp/tid/$tid\" target=\"_blank\">$title</a></td>
-				<td>$count<br></td>
-				<td>$subtitle<br></td>";
-			if (file_exists("./selectcaptureimage.php") ) {
-				//	$capimgpath = preg_replace("/.m2p/", "", $fName);
-				print "			<td align=\"left\"> N/A </td>\n";
-			}
-			#if($list == "raw"){
+				//--
+				print "
+					<tr>
+					<td><INPUT TYPE='checkbox' NAME='delete[]' VALUE='$fName'><br></td>
+					<td><A HREF=\"$httpmediamappath/$fName\">$fName</A><br></td>
+					<td><a href=\"http://cal.syoboi.jp/tid/$tid\" target=\"_blank\">$title</a></td>
+					<td>$count<br></td>
+					<td>$subtitle<br></td>";
+				if (file_exists("./selectcaptureimage.php") ) {
+					//	$capimgpath = preg_replace("/.m2p/", "", $fName);
+					print "			<td align=\"left\"> N/A </td>\n";
+				}
 				$size = filesize($pathfName);
 				$size = round(($size/1073741824),2);
 				print "<td align=\"left\">$size</td>\n";
-			#}
-
-			print "</tr>\n
-				";
+				print "<td align=\"left\">";
+				$query = "
+					SELECT filestatus
+					FROM foltia_subtitle
+					WHERE m2pfilename = \"$fName\"
+					";
+				$status = sql_query($con, $query, "DBクエリに失敗しました");
+				$rall = $status->fetch();
+				print "$rall[0]</td>\n";
+				print "</tr>\n
+					";
 			}else{
 				//print "File is looks like BAD:preg<br>\n";
 			}//
@@ -219,13 +217,13 @@ if($list == "raw"){
 		foltia_subtitle.subtitle  ,
 		foltia_m2pfiles.m2pfilename  ,
 		foltia_subtitle.pid   
-			FROM foltia_subtitle , foltia_program , foltia_m2pfiles 
-			WHERE foltia_program.tid = foltia_subtitle.tid  
-			AND foltia_subtitle.m2pfilename = foltia_m2pfiles.m2pfilename 
-			ORDER BY foltia_subtitle.tid  DESC , foltia_subtitle.startdatetime  ASC 
-			LIMIT $lim OFFSET $st
+		FROM foltia_subtitle , foltia_program , foltia_m2pfiles 
+		WHERE foltia_program.tid = foltia_subtitle.tid  
+		AND foltia_subtitle.m2pfilename = foltia_m2pfiles.m2pfilename 
+		ORDER BY foltia_subtitle.tid  DESC , foltia_subtitle.startdatetime  ASC 
+		LIMIT $lim OFFSET $st
 
-			";
+		";
 }else{
 	$query = "
 		SELECT 
@@ -235,12 +233,12 @@ if($list == "raw"){
 		foltia_subtitle.subtitle  ,
 		foltia_m2pfiles.m2pfilename  ,
 		foltia_subtitle.pid   
-			FROM foltia_subtitle , foltia_program , foltia_m2pfiles 
-			WHERE foltia_program.tid = foltia_subtitle.tid  
-			AND foltia_subtitle.m2pfilename = foltia_m2pfiles.m2pfilename 
-			ORDER BY foltia_subtitle.startdatetime DESC 
-			LIMIT $lim OFFSET $st
-			";
+		FROM foltia_subtitle , foltia_program , foltia_m2pfiles 
+		WHERE foltia_program.tid = foltia_subtitle.tid  
+		AND foltia_subtitle.m2pfilename = foltia_m2pfiles.m2pfilename 
+		ORDER BY foltia_subtitle.startdatetime DESC 
+		LIMIT $lim OFFSET $st
+		";
 }
 
 //$rs = m_query($con, $query, "DBクエリに失敗しました");
@@ -250,10 +248,10 @@ $rowdata = $rs->fetch();
 /////////////////////////////////////////
 //テーブルの総数取得
 $query2 = "
-SELECT COUNT(*) AS cnt FROM foltia_subtitle , foltia_program , foltia_m2pfiles
-WHERE foltia_program.tid = foltia_subtitle.tid
-AND foltia_subtitle.m2pfilename = foltia_m2pfiles.m2pfilename
-";
+	SELECT COUNT(*) AS cnt FROM foltia_subtitle , foltia_program , foltia_m2pfiles
+	WHERE foltia_program.tid = foltia_subtitle.tid
+	AND foltia_subtitle.m2pfilename = foltia_m2pfiles.m2pfilename
+	";
 $rs2 = sql_query($con, $query2, "DB\?\ィ\e?E?oCO???T????");
 $rowdata2 = $rs2->fetch();
 if (! $rowdata2) {
@@ -302,6 +300,16 @@ if ($rowdata) {
 		$size = filesize("/tv/php/tv/$fName");
 		$size = round(($size/1073741824),2);
 		print "<td align=\"left\">$size</td>\n";
+		print "<td align=\"left\">";
+		$query = "
+			SELECT filestatus
+			FROM foltia_subtitle
+			WHERE m2pfilename = \"$fName\"
+			";
+		$status = sql_query($con, $query, "DBクエリに失敗しました");
+		$rall = $status->fetch();
+		$fstatus = $rall[0];
+		print "$fstatus</td>\n";
 
 		print "</tr>\n
 			";
@@ -319,8 +327,8 @@ if ($rowdata) {
 }//end if
 
 print "</tbody>
-</table>
-</FORM>\n";
+	</table>
+	</FORM>\n";
 
 //////////////////////////////////////////////////////////////////////
 //クエリ代入
@@ -339,11 +347,11 @@ if ($list== "title"){
 		SELECT distinct
 		foltia_program.tid,
 		foltia_program.title 
-			FROM foltia_subtitle , foltia_program , foltia_m2pfiles 
-			WHERE foltia_program.tid = foltia_subtitle.tid  
-			AND foltia_subtitle.m2pfilename = foltia_m2pfiles.m2pfilename 
-			ORDER BY foltia_program.tid DESC 
-			";
+		FROM foltia_subtitle , foltia_program , foltia_m2pfiles 
+		WHERE foltia_program.tid = foltia_subtitle.tid  
+		AND foltia_subtitle.m2pfilename = foltia_m2pfiles.m2pfilename 
+		ORDER BY foltia_program.tid DESC 
+		";
 
 	//$rs = m_query($con, $query, "DBクエリに失敗しました");
 	$rs = sql_query($con, $query, "DBクエリに失敗しました");
