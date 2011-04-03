@@ -5,13 +5,13 @@
 
 mp4player.php
 
-ÌÜÅª
-HTML5 Video Player¤ò»È¤Ã¤ÆMP4¤ÎºÆÀ¸¤ò¤·¤Ş¤¹
+ç›®çš„
+HTML5 Video Playerã‚’ä½¿ã£ã¦MP4ã®å†ç”Ÿã‚’ã—ã¾ã™
 
 based HTML5 Video Player | VideoJS http://videojs.com/ 
 
-°ú¿ô
-f:ºÆÀ¸¥Õ¥¡¥¤¥ëÌ¾
+å¼•æ•°
+f:å†ç”Ÿãƒ•ã‚¡ã‚¤ãƒ«å
 
  DCC-JPL Japan/foltia project
 
@@ -38,7 +38,7 @@ $query = "
 SELECT title,countno,subtitle,foltia_subtitle.tid,PSPfilename  
 FROM foltia_subtitle,foltia_program 
 WHERE pid = ? AND foltia_subtitle.tid = foltia_program.tid";
-$rs = sql_query($con, $query, "DB¥¯¥¨¥ê¤Ë¼ºÇÔ¤·¤Ş¤·¤¿",array($pid));
+$rs = sql_query($con, $query, "DBã‚¯ã‚¨ãƒªã«å¤±æ•—ã—ã¾ã—ãŸ",array($pid));
 $rowdata = $rs->fetch();
 
 //$title = htmlspecialchars(mb_convert_encoding($rowdata[0],"UTF-8", "EUC-JP"));
@@ -46,36 +46,36 @@ $title = htmlspecialchars($rowdata[0]);
 	if ($rowdata[1] == ""){
 	$countno = "";
 	}else{
-	$countno = "Âè".htmlspecialchars($rowdata[1])."ÏÃ";
+	$countno = "ç¬¬".htmlspecialchars($rowdata[1])."è©±";
 	}
 //$subtitle = htmlspecialchars(mb_convert_encoding($rowdata[2],"UTF-8", "EUC-JP"));
 $subtitle = htmlspecialchars($rowdata[2]);
 $tid =  htmlspecialchars($rowdata[3]);
 $filename = htmlspecialchars($rowdata[4]);
 
-}else{//°ú¿ô¤Ê¤·¥¨¥é¡¼½èÍı
+}else{//å¼•æ•°ãªã—ã‚¨ãƒ©ãƒ¼å‡¦ç†
 
 header("Status: 404 Not Found",TRUE,404);
 print "<!DOCTYPE html>
 <html>
 <head>
-  <meta charset=\"EUC-JP\" />\n";
+  <meta charset=\"UTF8\" />\n";
 	print "  <title>foltia HTML5 Video Player</title></head><body>No pid.</body></html>";
 	exit ;
 }
 
-if ($filename == "") {//¥Õ¥¡¥¤¥ë¤Ê¤·¤Ê¤·¥¨¥é¡¼½èÍı
+if ($filename == "") {//ãƒ•ã‚¡ã‚¤ãƒ«ãªã—ãªã—ã‚¨ãƒ©ãƒ¼å‡¦ç†
 header("Status: 404 Not Found",TRUE,404);
 print "<!DOCTYPE html>
 <html>
 <head>
-  <meta charset=\"EUC-JP\" />\n";
+  <meta charset=\"UTF8\" />\n";
 	print "  <title>foltia HTML5 Video Player</title></head><body>File not found.</body></html>";
 	exit ;
 }
 
 
-print "<!DOCTYPE html>\n<html>\n<head><meta charset=\"EUC-JP\" />\n\n
+print "<!DOCTYPE html>\n<html>\n<head><meta charset=\"UTF8\" />\n\n
 <title>foltia HTML5 Video Player / $title $countno $subtitle</title>\n";
 $mp4videofileurl =  "http://". getserverfqdn() ."$httpmediamappath/$tid.localized/mp4/$filename";
 ?>
@@ -83,9 +83,9 @@ $mp4videofileurl =  "http://". getserverfqdn() ."$httpmediamappath/$tid.localize
 
 
   <!-- Include the VideoJS Library -->
-  <script src="./video-js/video.js" type="text/javascript" charset="EUC-JP"></script>
+  <script src="./video-js/video.js" type="text/javascript" charset="UTF8"></script>
 
-  <script type="text/javascript" charset="EUC-JP">
+  <script type="text/javascript" charset="UTF8">
     // Run the script on page load.
 
     // If using jQuery
@@ -105,7 +105,7 @@ $mp4videofileurl =  "http://". getserverfqdn() ."$httpmediamappath/$tid.localize
 
   </script>
   <!-- Include the VideoJS Stylesheet -->
-  <link rel="stylesheet" href="./video-js/video-js.css" type="text/css" media="screen" title="Video JS" charset="EUC-JP">
+  <link rel="stylesheet" href="./video-js/video-js.css" type="text/css" media="screen" title="Video JS" charset="UTF8">
 </head>
 <body>
 

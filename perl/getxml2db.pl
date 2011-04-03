@@ -77,7 +77,7 @@ s/\xef\xbd\x9e/\xe3\x80\x9c/g; #wavedash
 s/\xef\xbc\x8d/\xe2\x88\x92/g; #hyphenminus
 s/&#([0-9A-Fa-f]{2,6});/(chr($1))/eg; #'遊戯王5D&#039;s'とかの数値参照対応を
 
-Jcode::convert(\$_,'euc','utf8'); 
+#Jcode::convert(\$_,'euc','utf8'); 
 
 #<ProgItem PID="21543" TID="528" StTime="20041114213000" EdTime="20041114220000" ChName="AT-X" Count="4" StOffset="0" SubTitle="いやだよ、サヨナラ…" Title="おとぎストーリー 天使のしっぽ" ProgComment=""/>
 if (/^<ProgItem /){

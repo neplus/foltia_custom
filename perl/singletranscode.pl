@@ -264,7 +264,7 @@ if ( $countno == "0" ){
 	$pspcountno = $countno ;
 }
 &writelog("singletranscode OPTIMIZE  mp4psp -p $pspdirname/M4V$pspfilname.MP4   -t  '$psptrcn[2] $pspcountno $programtitle[0]' ");
-Jcode::convert(\$programtitle[0],'euc');
+#Jcode::convert(\$programtitle[0],'euc');
 system ("/usr/local/bin/mp4psp -p $pspdirname/M4V$pspfilname.MP4   -t  '$psptrcn[2] $pspcountno $programtitle[0]'") ;
 
 

@@ -50,7 +50,7 @@ if (-e "$recfolderpath/$tid.localized"){
  @subticount= $sth->fetchrow_array;
 $title = $subticount[0] ;
 $titleeuc = $title ;
- Jcode::convert(\$title , 'utf8', 'euc', "z");
+#Jcode::convert(\$title , 'utf8', 'euc', "z");
 
 
 	mkdir ("$recfolderpath/$tid.localized",0755);
