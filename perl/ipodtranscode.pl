@@ -255,7 +255,7 @@ while ($counttranscodefiles >= 1){
 					}else{
 						$filelist = `ls -lhtr $recfolderpath/${filenamebody}*`;
 						$debugenv = `env`;
-						&writelog("ipodtranscode ERR File not exist.$debugenv.$filelist ;$filenamebody.base.mp4;$filelist;cd $recfolderpath ;$toolpath/perl/tool/MP4Box -fps 29.97 -add $filenamebody.264 -new $filenamebody.base.mp4");
+						&writelog("ipodtranscode ERR File not exist. $filelist ;$filenamebody.base.mp4;$filelist;cd $recfolderpath ;$toolpath/perl/tool/MP4Box -fps 29.97 -add $filenamebody.264 -new $filenamebody.base.mp4");
 					}
 				}else{
 					&writelog("ipodtranscode WARN; Pls. install $toolpath/perl/tool/MP4Box");
@@ -343,8 +343,10 @@ sub makethumbnail(){
 #ハイビジョンTS
 #TODO mplayerがうまくサムネイルを作成しないので修正する
 	}
-	system("cp $toolpath/php/$pid.localized/img/$filenamebody/00000003.jpg $pspdirname/$thmfilename")
-	&writelog("ipodtranscode DEBUG cp $toolpath/php/$pid.localized/img/$filenamebody/00000003.jpg $pspdirname/$thmfilename")
+	$outputfilename =~ s/.m2t$|.ts$|.m2p$|.mpg$|.aac$//gi;
+	
+	system("cp $toolpath/php/$pid.localized/img/$outputfilenamel/00000003.jpg $pspdirname/$thmfilename")
+	&writelog("ipodtranscode DEBUG cp $toolpath/php/$pid.localized/img/$outputfilename/00000003.jpg $pspdirname/$thmfilename")
 }#endsub makethumbnail
 
 

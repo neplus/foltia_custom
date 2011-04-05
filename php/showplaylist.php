@@ -297,7 +297,7 @@ if ($rowdata) {
 			$capimgpath = preg_replace("/.m2.+/", "", $fName);
 			print "			<td align=\"left\"><a href=\"./selectcaptureimage.php?pid=$pid\">キャプ</a></td>\n";
 		}
-		$size = filesize("/tv/php/tv/$fName");
+		$size = filesize("$recfolderpath/$fName");
 		$size = round(($size/1073741824),2);
 		print "<td align=\"left\">$size</td>\n";
 		print "<td align=\"left\">";
