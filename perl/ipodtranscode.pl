@@ -344,7 +344,7 @@ sub makethumbnail(){
 #TODO mplayerがうまくサムネイルを作成しないので修正する
 	}
 	$outputfilename =~ s/.m2t$|.ts$|.m2p$|.mpg$|.aac$//gi;
-	
+
 	system("cp $toolpath/php/$pid.localized/img/$filenamebody/00000003.jpg $pspdirname/$thmfilename")
 	&writelog("ipodtranscode DEBUG cp $toolpath/php/$pid.localized/img/$filenamebody/00000003.jpg $pspdirname/$thmfilename")
 }#endsub makethumbnail
