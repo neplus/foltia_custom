@@ -345,8 +345,8 @@ sub makethumbnail(){
 	}
 	$outputfilename =~ s/.m2t$|.ts$|.m2p$|.mpg$|.aac$//gi;
 	
-	system("cp $toolpath/php/$pid.localized/img/$outputfilenamel/00000003.jpg $pspdirname/$thmfilename")
-	&writelog("ipodtranscode DEBUG cp $toolpath/php/$pid.localized/img/$outputfilename/00000003.jpg $pspdirname/$thmfilename")
+	system("cp $toolpath/php/$pid.localized/img/$filenamebody/00000003.jpg $pspdirname/$thmfilename")
+	&writelog("ipodtranscode DEBUG cp $toolpath/php/$pid.localized/img/$filenamebody/00000003.jpg $pspdirname/$thmfilename")
 }#endsub makethumbnail
 
 

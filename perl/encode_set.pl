@@ -9,7 +9,11 @@ use DBI;
 use DBD::SQLite;
 use Jcode;
 
-#use lib "/tv/perl";
+$path = $0;
+$path =~ s/encode_set.pl$//i;
+if ($path ne "./"){
+	push( @INC, "$path");
+}
 require "foltialib.pl";
 
 $dbh=DBI->connect($DSN, $DBUser, $DBPass)||die $DBI::error;
@@ -17,14 +21,11 @@ $sth=$dbh->prepare('select m2pfilename from foltia_subtitle where filestatus=999
 $sth->execute();
 
 while(my $ref = $sth->fetch ){
-	&encode_set(@_)
+	&encode_set($ref);
 }
 
-
 sub encode_set{
-	($filename) = @_;
-	$dbh=DBI->connect($DSN,$DBUser,$DBPass)||die $DBI::error;
 	$sth=$dbh->prepare('update foltia_subtitle set filestatus=? WHERE foltia_subtitle.m2pfilename = ?');
-	$sth->execute($filename);
+	$sth->execute(70,$_[0]);
 }
 
